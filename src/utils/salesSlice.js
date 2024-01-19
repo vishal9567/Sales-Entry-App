@@ -7,7 +7,9 @@ const initialState={
     salesAmount:0,
     headerData:null,
     tableData:null,
-    vrNumber:0
+    vrNumber:0,
+    printReport:false,
+    salesPostData:null
 }
 
 const salesSlice=createSlice({
@@ -34,10 +36,16 @@ const salesSlice=createSlice({
         },
         setVrNumber:(state,action)=>{
             state.vrNumber=action.payload
+        },
+        setPrintReport:(state,action)=>{
+            state.printReport=action.payload
+        },
+        setSalesPostData:(state,action)=>{
+            state.salesPostData=action.payload
         }
     }
 }) 
-export const {setSalesEntry,setInsertRow,setClearTable,setSalesAmount,setHeaderData,setTableData,setVrNumber} = salesSlice.actions;
+export const {setSalesEntry,setInsertRow,setClearTable,setSalesAmount,setHeaderData,setTableData,setVrNumber,setPrintReport,setSalesPostData} = salesSlice.actions;
 export default salesSlice.reducer;
 export const salesData=(state)=>state.sales.salesEntry
 export const isInsert=(state)=>state.sales.insertRow
@@ -46,3 +54,5 @@ export const salesAmount=(state)=>state.sales.salesAmount
 export const headerData=(state)=>state.sales.headerData
 export const tableData=(state)=>state.sales.tableData
 export const vrNumber=(state)=>state.sales.vrNumber
+export const printReport=(state)=>state.sales.printReport
+export const salesPostData=(state)=>state.sales.salesPostData
