@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { clearTable, isInsert, setClearTable, setInsertRow, setSalesAmount } from "../../utils/salesSlice";
+import { clearTable, isInsert, setClearTable, setInsertRow, setSalesAmount, setTableData, vrNumber } from "../../utils/salesSlice";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 const itemMaster = import.meta.env.VITE_APP_ITEM_MASTER_API;
@@ -32,6 +32,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 function MyTableRow() {
     const isInsertRow = useSelector(isInsert);
     const isClearTable = useSelector(clearTable);
+    const vrNo = useSelector(vrNumber)
     const dispatch = useDispatch();
 
     const [masterData, setMasterData] = useState([]);
@@ -52,12 +53,12 @@ function MyTableRow() {
             const updateRows = [...prev];
             updateRows[index] = {
                 ...updateRows[index],
-                [field]: value,
+                [field]: field === 'qty' || field === 'rate' ? parseInt(value) : value,
             };
-            if(field === 'qty' || field === 'rate'){
-                const qty=parseFloat(updateRows[index].qty)
-                const rate=parseFloat(updateRows[index].rate)
-                updateRows[index].amount=qty*rate;
+            if (field === 'qty' || field === 'rate') {
+                const qty = parseFloat(updateRows[index].qty)
+                const rate = parseFloat(updateRows[index].rate)
+                updateRows[index].amount = qty * rate;
             }
             return updateRows;
         });
@@ -123,14 +124,16 @@ function MyTableRow() {
         }, 0);
         setTotalAmt(total)
         dispatch(setSalesAmount(total))
-    }, [formData]);
+        const newData = formData.map(({ amount, ...rest }, i) => ({ ...rest, sr_no: parseInt(`${i + 1}`), vr_no: parseInt(vrNo) }))
+        dispatch(setTableData(newData))
+    }, [formData, vrNo]);
 
 
     return (
         <TableBody>
             {formData &&
                 formData.map((row, index) => (
-                    <TableRow key={row?.item_code}>
+                    <TableRow key={index}>
                         <StyledTableCell>
                             {index + 1}
                             <IconButton

@@ -6,7 +6,8 @@ const initialState={
     clearTable:false,
     salesAmount:0,
     headerData:null,
-    tableData:null
+    tableData:null,
+    vrNumber:0
 }
 
 const salesSlice=createSlice({
@@ -30,10 +31,13 @@ const salesSlice=createSlice({
         },
         setTableData:(state,action)=>{
             state.tableData=action.payload
+        },
+        setVrNumber:(state,action)=>{
+            state.vrNumber=action.payload
         }
     }
 }) 
-export const {setSalesEntry,setInsertRow,setClearTable,setSalesAmount,setHeaderData,setTableData} = salesSlice.actions;
+export const {setSalesEntry,setInsertRow,setClearTable,setSalesAmount,setHeaderData,setTableData,setVrNumber} = salesSlice.actions;
 export default salesSlice.reducer;
 export const salesData=(state)=>state.sales.salesEntry
 export const isInsert=(state)=>state.sales.insertRow
@@ -41,3 +45,4 @@ export const clearTable=(state)=>state.sales.clearTable
 export const salesAmount=(state)=>state.sales.salesAmount
 export const headerData=(state)=>state.sales.headerData
 export const tableData=(state)=>state.sales.tableData
+export const vrNumber=(state)=>state.sales.vrNumber
