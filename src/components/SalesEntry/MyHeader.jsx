@@ -41,16 +41,19 @@ function MyHeader() {
     }, [isClearTable]);
 
     useEffect(() => {
-        const isoDate = formData?.vr_date;
-        const date = new Date(isoDate);
-        const day = date.getDate().toString();
-        const month = (date.getMonth() + 1).toString();
-        const year = date.getFullYear().toString();
+     
 
-        let createdOn = ` ${day}-${month}-${year}`;
+        // let createdOn = `${day}-${month}-${year}`;
+        // const isoDate = formData?.vr_date;
+        // const date = new Date(isoDate);
+        // const day = date.getDate().toString().padStart(2, '0');
+        // const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        // const year = date.getFullYear().toString();
+
+        // let createdOn = `${year}-${month}-${day}`;
         const data = {
             vr_no: formData.vr_no,
-            vr_date: createdOn,
+            vr_date: formData.vr_date,
             ac_name: formData.ac_name,
             ac_amt: formData.ac_amt,
             status: formData.status,
@@ -60,6 +63,7 @@ function MyHeader() {
     useEffect(() => {
         dispatch(setVrNumber(formData.vr_no))
     }, [formData])
+
     return (
         <Grid item md={12}>
             <Container>
@@ -117,6 +121,7 @@ function MyHeader() {
                             onChange={(e) => handleChange(e.target.name, e.target.value)}
                         >
                             <MenuItem value={"A"}>A</MenuItem>
+                            <MenuItem value={"I"}>I</MenuItem>
                         </TextField>
                         <TextField
                             type="number"

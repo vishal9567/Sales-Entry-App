@@ -1,13 +1,19 @@
 import { Button, ButtonGroup, Grid, Stack, useMediaQuery } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { headerData, setClearTable, setInsertRow, setPrintReport, setSalesPostData, tableData } from '../utils/salesSlice'
 import axios from 'axios'
+import MyToast from './Toast/MyToast'
 
 const api = import.meta.env.VITE_HEADER_MULTIPLE;
 
 
 function MyOptions() {
+    const [open,setOpen]=useState({
+        open: false,
+        message: '',
+        severity: ''
+    })
     const matches = useMediaQuery('(min-width:800px)')
     const dispatch = useDispatch()
 
@@ -21,6 +27,10 @@ function MyOptions() {
     const handleNew = () => {
         dispatch(setClearTable(true))
     }
+    const handleClose=()=>{
+        setOpen(false)
+    }
+
     const handleSave = async () => {
         const isArrayValid = (obj) => {
             return (
@@ -51,12 +61,24 @@ function MyOptions() {
                 "detail_table": tableDatas
             }
             dispatch(setSalesPostData(salesData))
-            console.log(salesData)
             try {
-                const response = await axios.post(api, salesData)
+                const response = await axios.post(api,salesData); //?----post request is not success check the data formate
+                setOpen((prev) => ({
+                    ...prev,
+                    open: true,
+                    message: "Voucher saved successfully",
+                    severity: "success"
+                }))
             }
             catch (err) {
-                console.log(err)
+                const data = err.response.data
+                setOpen((prev) => ({
+                    ...prev,
+                    open: true,
+                    message: "Internal server error",
+                    severity: "error"
+                }))
+                console.log(data)
             }
         }
     }
@@ -73,7 +95,7 @@ function MyOptions() {
                     <Button onClick={handlePrint}>Print</Button>
                 </ButtonGroup>
             </Stack>
-            
+            <MyToast handleClose={handleClose} open={open.open} message={open.message} color={open.severity} />
         </Grid>
     )
 }

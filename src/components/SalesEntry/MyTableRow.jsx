@@ -53,7 +53,7 @@ function MyTableRow() {
             const updateRows = [...prev];
             updateRows[index] = {
                 ...updateRows[index],
-                [field]: field === 'qty' || field === 'rate' ? parseInt(value) : value,
+                [field]: field === 'qty' || field === 'rate' ? (value ? parseInt(value) : '') : value,
             };
             if (field === 'qty' || field === 'rate') {
                 const qty = parseFloat(updateRows[index].qty)
