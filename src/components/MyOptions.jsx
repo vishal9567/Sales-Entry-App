@@ -78,7 +78,11 @@ function MyOptions() {
       };
       dispatch(setSalesPostData(salesData));
       try {
-        const response = await axios.post(api, salesData); //?----post request is not success check the data formate
+        const response = await axios.post(api, JSON.stringify(salesData), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });                                  //?----post request is not success check the data formate
         setOpen((prev) => ({
           ...prev,
           open: true,
